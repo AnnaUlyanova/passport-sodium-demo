@@ -31,6 +31,13 @@ router.get('/',
   }
 )
 
+router.get('/test',
+  ensureLoggedIn(),
+  (req, res) => {
+    res.render('test')
+  }
+)
+
 router.get('/register', (req, res) => {
   res.render('register', { flash: req.flash('error') })
 })
@@ -38,6 +45,16 @@ router.get('/register', (req, res) => {
 router.post('/register',
   register,
   registerFail
+)
+
+router.get('/auth/facebook',
+  passport.authenticate('facebook'))
+
+router.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function (req, res) {
+    res.redirect('/')
+  }
 )
 
 function register (req, res, next) {
